@@ -13,6 +13,7 @@ import com.sodiumtracker.R;
 import com.sodiumtracker.activities.AddSodiumActivity;
 import com.sodiumtracker.database.entity.Food;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class RecyclerViewTodayAdapter extends RecyclerView.Adapter<RecyclerViewTodayAdapter.ViewHolder> {
@@ -26,11 +27,13 @@ public class RecyclerViewTodayAdapter extends RecyclerView.Adapter<RecyclerViewT
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView foodName;
+        public TextView foodName, amount;
 
         public ViewHolder(View itemView) {
             super(itemView);
             this.foodName = itemView.findViewById(R.id.foodName);
+            this.amount = itemView.findViewById(R.id.amount);
+//            this.date = itemView.findViewById(R.id.date);
         }
     }
 
@@ -46,11 +49,18 @@ public class RecyclerViewTodayAdapter extends RecyclerView.Adapter<RecyclerViewT
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Food food = foods.get(position);
-        holder.foodName.setText(food.name+" - "+ food.amount + " - "+ food.date);
+        holder.foodName.setText(food.name);
+        holder.amount.setText(food.amount + "mg");
+
+//        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+//        String shortTimeStr = sdf.format(food.date);
+//
+//
+//        holder.date.setText(shortTimeStr);
 
         holder.itemView.setOnClickListener(view -> {
             Intent intent = new Intent(context, AddSodiumActivity.class);
-            intent.putExtra("id",food.id);
+            intent.putExtra("id", food.id);
             context.startActivity(intent);
         });
     }

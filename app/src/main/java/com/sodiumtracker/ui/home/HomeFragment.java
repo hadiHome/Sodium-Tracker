@@ -1,5 +1,7 @@
 package com.sodiumtracker.ui.home;
 
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,9 +11,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.room.Room;
 
+import com.sodiumtracker.MyPreferences;
+import com.sodiumtracker.activities.ChangeLimitAmountActivity;
 import com.sodiumtracker.database.AppDatabase;
 import com.sodiumtracker.databinding.FragmentHomeBinding;
 import com.sodiumtracker.ui.home.adapters.RecyclerViewTodayAdapter;
@@ -48,7 +52,7 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        binding.todayRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        binding.todayRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 1));
 
     }
 
@@ -61,9 +65,29 @@ public class HomeFragment extends Fragment {
         long endOfTodayMilli = DatesUtils.atEndOfDay(today).getTime();
         int sum = db.foodDao().getTotalAmountByDate(startOfTodayMilli, endOfTodayMilli);
 
-        binding.totalAmountTv.setText("total: " + sum);
+        int limit = MyPreferences.getAmountLimit(getContext());
+        binding.amountLimitTv.setText("" + limit);
+        binding.amountLimitTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), ChangeLimitAmountActivity.class));
+            }
+        });
+        binding.totalAmountTv.setText("" + sum);
+        int remaining = limit - sum;
+        binding.remainingAmountTv.setText("" + remaining);
 
-        RecyclerViewTodayAdapter recyclerViewTodayAdapter = new RecyclerViewTodayAdapter(db.foodDao().getByDate(startOfTodayMilli,endOfTodayMilli));
+        int progress = 0;
+        if (limit > 0) {
+            progress = (sum * 100) / limit;
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            binding.progressIndicator.setProgress(progress, true);
+        } else {
+            binding.progressIndicator.setProgress(progress);
+        }
+
+        RecyclerViewTodayAdapter recyclerViewTodayAdapter = new RecyclerViewTodayAdapter(db.foodDao().getByDate(startOfTodayMilli, endOfTodayMilli));
         binding.todayRecyclerView.setAdapter(recyclerViewTodayAdapter);
 
 
