@@ -10,4 +10,9 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
+    <string name="date">Date</string>
+    <string name="add">Add</string>
+    <string name="please_fill_all_fields">Please fill all fields</string>
+    <string name="successfully_added">Successfully Added</string>
+    <string name="successfully_updated">Successfully Updated</string>
 </resources>
