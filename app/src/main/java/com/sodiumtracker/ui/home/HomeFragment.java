@@ -1,5 +1,6 @@
 package com.sodiumtracker.ui.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.room.Room;
 
+import com.sodiumtracker.MyPreferences;
+import com.sodiumtracker.activities.ChangeLimitAmountActivity;
 import com.sodiumtracker.database.AppDatabase;
 import com.sodiumtracker.databinding.FragmentHomeBinding;
 import com.sodiumtracker.ui.home.adapters.RecyclerViewTodayAdapter;
@@ -61,9 +64,16 @@ public class HomeFragment extends Fragment {
         long endOfTodayMilli = DatesUtils.atEndOfDay(today).getTime();
         int sum = db.foodDao().getTotalAmountByDate(startOfTodayMilli, endOfTodayMilli);
 
+        binding.amountLimitTv.setText("limit: " + MyPreferences.getAmountLimit(getContext()));
+        binding.amountLimitTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), ChangeLimitAmountActivity.class));
+            }
+        });
         binding.totalAmountTv.setText("total: " + sum);
 
-        RecyclerViewTodayAdapter recyclerViewTodayAdapter = new RecyclerViewTodayAdapter(db.foodDao().getByDate(startOfTodayMilli,endOfTodayMilli));
+        RecyclerViewTodayAdapter recyclerViewTodayAdapter = new RecyclerViewTodayAdapter(db.foodDao().getByDate(startOfTodayMilli, endOfTodayMilli));
         binding.todayRecyclerView.setAdapter(recyclerViewTodayAdapter);
 
 

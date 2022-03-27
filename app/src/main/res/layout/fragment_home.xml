@@ -8,6 +8,11 @@
     tools:context=".ui.home.HomeFragment">
 
     <TextView
+        android:id="@+id/amountLimitTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
         android:id="@+id/totalAmountTv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

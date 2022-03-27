@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SodiumTracker">
         <activity
+            android:name=".activities.ChangeLimitAmountActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.AddSodiumActivity"
             android:exported="false" />
         <activity
