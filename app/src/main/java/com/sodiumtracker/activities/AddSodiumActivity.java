@@ -1,10 +1,14 @@
 package com.sodiumtracker.activities;
 
+import static java.util.Calendar.HOUR_OF_DAY;
+
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -70,25 +74,40 @@ public class AddSodiumActivity extends AppCompatActivity {
         // add
         if (!isUpdate) {
             myCalendar = Calendar.getInstance();
-            myCalendar.set(Calendar.HOUR_OF_DAY, 0);
-            myCalendar.set(Calendar.MINUTE, 0);
-            myCalendar.set(Calendar.SECOND, 0);
-            myCalendar.set(Calendar.MILLISECOND, 0);
         } else {
             myCalendar = DatesUtils.toCalendar(food.date);
         }
+//        myCalendar.set(Calendar.HOUR_OF_DAY, 0);
+//        myCalendar.set(Calendar.MINUTE, 0);
+        myCalendar.set(Calendar.SECOND, 0);
+        myCalendar.set(Calendar.MILLISECOND, 0);
+
         date = (view, year, monthOfYear, dayOfMonth) -> {
             myCalendar.set(Calendar.YEAR, year);
             myCalendar.set(Calendar.MONTH, monthOfYear);
             myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            selectTime();
             updateLabel();
         };
         updateLabel();
     }
 
+    public void selectTime() {
+        new TimePickerDialog(AddSodiumActivity.this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                myCalendar.set(Calendar.HOUR_OF_DAY, selectedHour);
+                myCalendar.set(Calendar.MINUTE, selectedMinute);
+                updateLabel();
+            }
+        }, myCalendar.get(Calendar.HOUR_OF_DAY), myCalendar.get(Calendar.MINUTE), false).show();//Yes 24 hour time)
+    }
+
     private void updateLabel() {
-        String myFormat = "EEEE, MM/dd/yyyy";
+//        String myFormat = "EEEE, MM/dd/yyyy";
+        String myFormat = "EEEE, MM/dd/yyyy hh:mm aa";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat);
+//        SimpleDateFormat sdfTime = new SimpleDateFormat("hh:mm aa");
         dateET.setText(sdf.format(myCalendar.getTime()));
     }
 
@@ -97,8 +116,7 @@ public class AddSodiumActivity extends AppCompatActivity {
 
         String name = nameEt.getText().toString();
         String amountStr = amountEt.getText().toString();
-        Calendar calendar = myCalendar;
-        Date date = calendar.getTime();
+        Date date = myCalendar.getTime();
 
         if (!name.equals("") && !amountStr.equals("") && date != null) {
             int amount = Integer.parseInt(amountStr);
