@@ -50,7 +50,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/nunito"
-                    android:textSize="18dp"
+                    android:textSize="18sp"
                     android:textColor="@color/blue"
                     android:text="Limit" />
 
@@ -78,7 +78,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/nunito"
-                    android:textSize="18dp"
+                    android:textSize="18sp"
                     android:textColor="@color/blue"
                     android:text="Cosumption" />
 
@@ -108,7 +108,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/blue"
                     android:fontFamily="@font/nunito"
-                    android:textSize="20dp"
+                    android:textSize="18sp"
                     android:text="Remaining" />
 
                 <TextView
