@@ -2,15 +2,19 @@ package com.sodiumtracker.ui.home.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.sodiumtracker.R;
 import com.sodiumtracker.activities.AddSodiumActivity;
+import com.sodiumtracker.activities.AddSodiumDialog;
 import com.sodiumtracker.database.entity.Food;
 
 import java.text.SimpleDateFormat;
@@ -59,9 +63,22 @@ public class RecyclerViewTodayAdapter extends RecyclerView.Adapter<RecyclerViewT
 //        holder.date.setText(shortTimeStr);
 
         holder.itemView.setOnClickListener(view -> {
-            Intent intent = new Intent(context, AddSodiumActivity.class);
-            intent.putExtra("id", food.id);
-            context.startActivity(intent);
+//            Intent intent = new Intent(context, AddSodiumActivity.class);
+//            intent.putExtra("id", food.id);
+//
+//            context.startActivity(intent);
+            String hadi ="hi";
+
+            AddSodiumDialog cdd=new AddSodiumDialog(context,food.id,hadi);
+            cdd.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            cdd.show();
+
+            cdd.getWindow().setLayout(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+
+
+
+
         });
     }
 

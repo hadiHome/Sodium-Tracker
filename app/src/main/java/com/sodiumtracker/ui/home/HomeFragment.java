@@ -1,8 +1,11 @@
 package com.sodiumtracker.ui.home;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +17,18 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.room.Room;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
+import com.sodiumtracker.MainActivity;
 import com.sodiumtracker.MyPreferences;
+import com.sodiumtracker.R;
+import com.sodiumtracker.activities.AddSodiumDialog;
 import com.sodiumtracker.activities.ChangeLimitAmountActivity;
 import com.sodiumtracker.database.AppDatabase;
 import com.sodiumtracker.databinding.FragmentHomeBinding;
@@ -28,8 +42,10 @@ public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
     private FragmentHomeBinding binding;
+    AdView mAdView;
 
     AppDatabase db;
+    private InterstitialAd mInterstitialAd;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -45,14 +61,40 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+
+        ((MainActivity)getActivity()).setFragmentRefreshListener(new MainActivity.FragmentRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+
+
+                binding.todayRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 1));
+
+            }
+        });
+
         return root;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        MobileAds.initialize(getContext(), new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+
+        mAdView = view.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
+
+
+
 
         binding.todayRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 1));
+
 
     }
 
@@ -64,6 +106,7 @@ public class HomeFragment extends Fragment {
         long startOfTodayMilli = DatesUtils.atStartOfDay(today).getTime();
         long endOfTodayMilli = DatesUtils.atEndOfDay(today).getTime();
         int sum = db.foodDao().getTotalAmountByDate(startOfTodayMilli, endOfTodayMilli);
+
 
         int limit = MyPreferences.getAmountLimit(getContext());
         binding.amountLimitTv.setText("" + limit);
@@ -98,4 +141,5 @@ public class HomeFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
+
 }

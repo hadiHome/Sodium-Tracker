@@ -1,11 +1,21 @@
 package com.sodiumtracker;
 
+import android.app.Fragment;
+import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
@@ -14,12 +24,18 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.room.Room;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.sodiumtracker.activities.AddSodiumActivity;
+import com.sodiumtracker.activities.AddSodiumDialog;
 import com.sodiumtracker.database.AppDatabase;
 import com.sodiumtracker.database.entity.Food;
 import com.sodiumtracker.databinding.ActivityMainBinding;
+import com.sodiumtracker.ui.home.HomeFragment;
 
 import java.util.Calendar;
 import java.util.List;
@@ -28,8 +44,26 @@ public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
+    private InterstitialAd mInterstitialAd;
+    private FragmentRefreshListener fragmentRefreshListener;
 
     AppDatabase db;
+
+
+    public FragmentRefreshListener getFragmentRefreshListener() {
+        return fragmentRefreshListener;
+    }
+
+    public void setFragmentRefreshListener(FragmentRefreshListener fragmentRefreshListener) {
+        this.fragmentRefreshListener = fragmentRefreshListener;
+    }
+
+
+    public interface FragmentRefreshListener{
+        void onRefresh();
+    }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,15 +77,60 @@ public class MainActivity extends AppCompatActivity {
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        AdRequest adRequest = new AdRequest.Builder().build();
 
         setSupportActionBar(binding.appBarMain.toolbar);
+        InterstitialAd.load(MainActivity.this,"ca-app-pub-9624523949741017/9650668273", adRequest,
+                new InterstitialAdLoadCallback() {
+                    @Override
+                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                        // The mInterstitialAd reference will be null until
+                        // an ad is loaded.
+                        mInterstitialAd = interstitialAd;
+                        Log.i("TAG", "onAdLoaded");
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        // Handle the error
+                        Log.i("TAG", loadAdError.getMessage());
+                        mInterstitialAd = null;
+                    }
+                });
+
+
         binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
-                Intent intent = new Intent(getApplicationContext(), AddSodiumActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(getApplicationContext(), AddSodiumActivity.class);
+//                startActivity(intent);
+
+
+                AddSodiumDialog cdd=new AddSodiumDialog(MainActivity.this,-1,"hi");
+                cdd.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                cdd.show();
+
+                cdd.getWindow().setLayout(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+cdd.setOnDismissListener(new DialogInterface.OnDismissListener() {
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        Fragment currentFragment = getFragmentManager().findFragmentById(R.id.nav_home);
+
+        if(getFragmentRefreshListener()!=null){
+            getFragmentRefreshListener().onRefresh();
+        }
+        showAd();
+
+
+
+    }
+});
+
+
+
+
             }
         });
         DrawerLayout drawer = binding.drawerLayout;
@@ -89,5 +168,17 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    public void showAd() {
+        if (mInterstitialAd != null) {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+            SharedPreferences.Editor ed = prefs.edit();
+
+            ed.commit();
+            mInterstitialAd.show(MainActivity.this);
+        } else {
+            Log.d("TAG", "The interstitial ad wasn't ready yet.");
+        }
     }
 }
