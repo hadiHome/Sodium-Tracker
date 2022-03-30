@@ -28,7 +28,7 @@ public interface FoodDao {
     @Query("SELECT * FROM food")
     List<Food> getAll();
 
-    @Query("SELECT id,name,SUM(amount) as amount,date  FROM food GROUP BY date(date/1000, 'unixepoch')")
+    @Query("SELECT id,name,SUM(amount) as amount,date  FROM food GROUP BY DATE(date/1000, 'unixepoch','localtime')")
     List<Food> getAllGroupByDates();
 
     @Query("SELECT * FROM food WHERE date BETWEEN :from AND :to")
