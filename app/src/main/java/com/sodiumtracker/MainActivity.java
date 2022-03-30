@@ -1,17 +1,13 @@
 package com.sodiumtracker;
 
 import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -29,16 +25,9 @@ import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
-import com.sodiumtracker.activities.AddSodiumActivity;
 import com.sodiumtracker.activities.AddSodiumDialog;
 import com.sodiumtracker.database.AppDatabase;
-import com.sodiumtracker.database.entity.Food;
 import com.sodiumtracker.databinding.ActivityMainBinding;
-import com.sodiumtracker.ui.home.HomeFragment;
-
-import java.util.Calendar;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -59,10 +48,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public interface FragmentRefreshListener{
+    public interface FragmentRefreshListener {
         void onRefresh();
     }
-
 
 
     @Override
@@ -80,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         AdRequest adRequest = new AdRequest.Builder().build();
 
         setSupportActionBar(binding.appBarMain.toolbar);
-        InterstitialAd.load(MainActivity.this,"ca-app-pub-9624523949741017/9650668273", adRequest,
+        InterstitialAd.load(MainActivity.this, "ca-app-pub-9624523949741017/9650668273", adRequest,
                 new InterstitialAdLoadCallback() {
                     @Override
                     public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
@@ -108,27 +96,24 @@ public class MainActivity extends AppCompatActivity {
 //                startActivity(intent);
 
 
-                AddSodiumDialog cdd=new AddSodiumDialog(MainActivity.this,-1,"hi");
+                AddSodiumDialog cdd = new AddSodiumDialog(MainActivity.this, -1, "hi");
                 cdd.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 cdd.show();
 
                 cdd.getWindow().setLayout(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-cdd.setOnDismissListener(new DialogInterface.OnDismissListener() {
-    @Override
-    public void onDismiss(DialogInterface dialog) {
-        Fragment currentFragment = getFragmentManager().findFragmentById(R.id.nav_home);
+                cdd.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        Fragment currentFragment = getFragmentManager().findFragmentById(R.id.nav_home);
 
-        if(getFragmentRefreshListener()!=null){
-            getFragmentRefreshListener().onRefresh();
-        }
-        showAd();
-
-
-
-    }
-});
+                        if (getFragmentRefreshListener() != null) {
+                            getFragmentRefreshListener().onRefresh();
+                        }
+                        showAd();
 
 
+                    }
+                });
 
 
             }
@@ -138,7 +123,7 @@ cdd.setOnDismissListener(new DialogInterface.OnDismissListener() {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home,R.id.nav_data_chart, R.id.nav_gallery, R.id.nav_slideshow)
+                R.id.nav_home, R.id.nav_data_chart, R.id.nav_gallery, R.id.nav_slideshow)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
