@@ -13,8 +13,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import com.sodiumtracker.R;
+import com.sodiumtracker.database.AppDatabase;
 import com.sodiumtracker.models.ScheduleModel;
 import com.sodiumtracker.ui.calendar.adapters.ScheduleRecyclerViewAdapter;
 import com.sodiumtracker.utils.DatesUtils;
@@ -37,6 +39,8 @@ public class CalendarFragment extends Fragment implements View.OnClickListener {
     RecyclerView scheduleRecyclerView;
     ScheduleRecyclerViewAdapter scheduleRecyclerViewAdapter;
     ImageView goBackOneMonth, goForwardOneMonth;
+
+    AppDatabase db;
 
     public CalendarFragment() {
         // Required empty public constructor
@@ -65,6 +69,11 @@ public class CalendarFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        db = Room.databaseBuilder(
+                getContext(),
+                AppDatabase.class, "app_database"
+        ).allowMainThreadQueries().build();
 
         monthTextTextView = view.findViewById(R.id.monthTextTextView);
         goBackOneMonth = view.findViewById(R.id.goBackOneMonth);
@@ -108,7 +117,7 @@ public class CalendarFragment extends Fragment implements View.OnClickListener {
 
         }
 
-        scheduleRecyclerViewAdapter = new ScheduleRecyclerViewAdapter(scheduleModels, getContext());
+        scheduleRecyclerViewAdapter = new ScheduleRecyclerViewAdapter(scheduleModels, getContext(),db);
         scheduleRecyclerView.setAdapter(scheduleRecyclerViewAdapter);
 
 

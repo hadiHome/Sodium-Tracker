@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/parentItemLayout"
     android:layout_width="match_parent"
     android:layout_height="100dp"
-    android:orientation="vertical"
     android:paddingBottom="3dp">
 
     <LinearLayout
+        android:id="@+id/topLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -36,5 +36,13 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/resultSumTV"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/topLinearLayout"
+        android:gravity="center"
+        android:text="" />
 
-</LinearLayout>
+
+</RelativeLayout>

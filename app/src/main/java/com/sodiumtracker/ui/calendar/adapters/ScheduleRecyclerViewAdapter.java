@@ -4,43 +4,47 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.sodiumtracker.R;
+import com.sodiumtracker.database.AppDatabase;
 import com.sodiumtracker.models.ScheduleModel;
 import com.sodiumtracker.utils.DatesUtils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRecyclerViewAdapter.MyViewHolder> {
 
     private List<ScheduleModel> scheduleModels;
     private Context context;
+    private AppDatabase db;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public LinearLayout parentItemLayout;
-        //        public TextView homeworkInCaledarCircle, projectInCaledarCircle, examInCaledarCircle, quizInCaledarCircle;
-        public TextView dateText, itemIsToday;
+        public RelativeLayout parentItemLayout;
+        public TextView dateText, itemIsToday, resultSumTV;
 
         public MyViewHolder(View view) {
             super(view);
 
-            parentItemLayout = (LinearLayout) view.findViewById(R.id.parentItemLayout);
-            dateText = (TextView) view.findViewById(R.id.dateText);
-            itemIsToday = (TextView) view.findViewById(R.id.itemIsToday);
+            parentItemLayout = view.findViewById(R.id.parentItemLayout);
+            dateText = view.findViewById(R.id.dateText);
+            resultSumTV = view.findViewById(R.id.resultSumTV);
+            itemIsToday = view.findViewById(R.id.itemIsToday);
 
         }
     }
 
-    public ScheduleRecyclerViewAdapter(List<ScheduleModel> scheduleModels, Context context) {
+    public ScheduleRecyclerViewAdapter(List<ScheduleModel> scheduleModels, Context context, AppDatabase db) {
         this.scheduleModels = scheduleModels;
         this.context = context;
+        this.db = db;
     }
 
     @Override
@@ -61,6 +65,11 @@ public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRe
             String dateText = dateFormat.format(scheduleModel.getCalendar().getTime());
             holder.dateText.setText(dateText);
 
+            Date today = scheduleModel.getCalendar().getTime();
+            long startOfTodayMilli = DatesUtils.atStartOfDay(today).getTime();
+            long endOfTodayMilli = DatesUtils.atEndOfDay(today).getTime();
+            int sum = db.foodDao().getTotalAmountByDate(startOfTodayMilli, endOfTodayMilli);
+            holder.resultSumTV.setText(sum + "mg");
 
         } else {
 
