@@ -1,58 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/blue"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/blue">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
-        android:layout_marginEnd="10dp"
         android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:background="@drawable/back_white"
 
         android:orientation="vertical"
         tools:context=".ui.home.HomeFragment">
 
-        <com.google.android.gms.ads.AdView
-            xmlns:ads="http://schemas.android.com/apk/res-auto"
+        <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
             android:id="@+id/adView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
             ads:adSize="BANNER"
-            ads:adUnitId="ca-app-pub-9624523949741017/7696295068">
-        </com.google.android.gms.ads.AdView>
+            ads:adUnitId="ca-app-pub-9624523949741017/7696295068"></com.google.android.gms.ads.AdView>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="10dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingTop="10dp">
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="80dp"
-                android:padding="10dp"
-                android:layout_marginStart="10dp"
                 android:layout_margin="3dp"
-                android:background="@drawable/background"
+                android:layout_marginStart="10dp"
                 android:layout_weight="1"
+                android:background="@drawable/background"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="10dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/nunito"
-                    android:textSize="18sp"
+                    android:text="Limit"
                     android:textColor="@color/blue"
-                    android:text="Limit" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/amountLimitTv"
@@ -67,20 +68,20 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="80dp"
-                android:padding="10dp"
-                android:background="@drawable/background"
-                android:layout_weight="1"
                 android:layout_margin="3dp"
+                android:layout_weight="1"
+                android:background="@drawable/background"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="10dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/nunito"
-                    android:textSize="18sp"
+                    android:text="Cosumption"
                     android:textColor="@color/blue"
-                    android:text="Cosumption" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/totalAmountTv"
@@ -94,22 +95,22 @@
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:background="@drawable/background"
                 android:layout_height="80dp"
-                android:layout_marginEnd="10dp"
-                android:padding="10dp"
                 android:layout_margin="3dp"
+                android:layout_marginEnd="10dp"
                 android:layout_weight="1"
+                android:background="@drawable/background"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="10dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/blue"
                     android:fontFamily="@font/nunito"
-                    android:textSize="18sp"
-                    android:text="Remaining" />
+                    android:text="Remaining"
+                    android:textColor="@color/blue"
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/remainingAmountTv"
@@ -127,17 +128,28 @@
             android:id="@+id/progressIndicator"
             android:layout_width="match_parent"
             android:layout_height="30dp"
+            android:layout_margin="10dp"
             app:indicatorColor="@color/turq"
             app:trackColor="@color/blue"
-            app:trackCornerRadius="50dp"
-            android:layout_margin="10dp" />
+            app:trackCornerRadius="50dp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/todayRecyclerView"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
-            android:layout_height="wrap_content"
-            android:paddingBottom="30dp"/>
+            android:paddingBottom="30dp" />
     </LinearLayout>
-</ScrollView>
+    </ScrollView>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/fab"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/plus" />
+</RelativeLayout>

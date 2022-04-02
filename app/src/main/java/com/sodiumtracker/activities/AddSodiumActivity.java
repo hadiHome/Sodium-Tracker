@@ -7,6 +7,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -33,6 +34,8 @@ public class AddSodiumActivity extends AppCompatActivity {
     EditText nameEt, amountEt, dateET;
     boolean isUpdate = false;
     AppDatabase db;
+    public int foodId;
+    public Button add;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
