@@ -53,7 +53,7 @@
                     android:fontFamily="@font/nunito"
                     android:text="Limit"
                     android:textColor="@color/blue"
-                    android:textSize="18sp" />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/amountLimitTv"
@@ -81,7 +81,7 @@
                     android:fontFamily="@font/nunito"
                     android:text="Cosumption"
                     android:textColor="@color/blue"
-                    android:textSize="18sp" />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/totalAmountTv"
@@ -110,7 +110,7 @@
                     android:fontFamily="@font/nunito"
                     android:text="Remaining"
                     android:textColor="@color/blue"
-                    android:textSize="18sp" />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/remainingAmountTv"
