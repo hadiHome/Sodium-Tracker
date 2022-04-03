@@ -2,6 +2,8 @@ package com.sodiumtracker.ui.home;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -9,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -62,10 +65,9 @@ public class HomeFragment extends Fragment {
         View root = binding.getRoot();
 
 
-        ((MainActivity)getActivity()).setFragmentRefreshListener(new MainActivity.FragmentRefreshListener() {
+        ((MainActivity) getActivity()).setFragmentRefreshListener(new MainActivity.FragmentRefreshListener() {
             @Override
             public void onRefresh() {
-
 
 
                 binding.todayRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 1));
@@ -90,11 +92,49 @@ public class HomeFragment extends Fragment {
         mAdView.loadAd(adRequest);
 
 
-
-
-
         binding.todayRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 1));
 
+        InterstitialAd.load(getActivity(), "ca-app-pub-9624523949741017/9650668273", adRequest,
+                new InterstitialAdLoadCallback() {
+                    @Override
+                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                        // The mInterstitialAd reference will be null until
+                        // an ad is loaded.
+                        mInterstitialAd = interstitialAd;
+                        Log.i("TAG", "onAdLoaded");
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        // Handle the error
+                        Log.i("TAG", loadAdError.getMessage());
+                        mInterstitialAd = null;
+                    }
+                });
+
+        binding.fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//                Intent intent = new Intent(getApplicationContext(), AddSodiumActivity.class);
+//                startActivity(intent);
+
+
+                AddSodiumDialog cdd = new AddSodiumDialog(getActivity(), -1, "hi");
+                cdd.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                cdd.show();
+
+                cdd.getWindow().setLayout(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                cdd.setOnDismissListener(dialog -> {
+                    showAd();
+                    setLayout();
+
+                });
+
+
+            }
+        });
 
     }
 
@@ -102,6 +142,11 @@ public class HomeFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
+        setLayout();
+
+    }
+
+    public void setLayout() {
         Date today = Calendar.getInstance().getTime();
         long startOfTodayMilli = DatesUtils.atStartOfDay(today).getTime();
         long endOfTodayMilli = DatesUtils.atEndOfDay(today).getTime();
@@ -133,13 +178,24 @@ public class HomeFragment extends Fragment {
         RecyclerViewTodayAdapter recyclerViewTodayAdapter = new RecyclerViewTodayAdapter(db.foodDao().getByDate(startOfTodayMilli, endOfTodayMilli));
         binding.todayRecyclerView.setAdapter(recyclerViewTodayAdapter);
 
-
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    public void showAd() {
+        if (mInterstitialAd != null) {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            SharedPreferences.Editor ed = prefs.edit();
+
+            ed.commit();
+            mInterstitialAd.show(getActivity());
+        } else {
+            Log.d("TAG", "The interstitial ad wasn't ready yet.");
+        }
     }
 
 }

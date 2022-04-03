@@ -17,6 +17,11 @@
         android:label="@string/chart"
         tools:layout="@layout/fragment_all_data_chart" />
     <fragment
+        android:id="@+id/nav_calendar"
+        android:name="com.sodiumtracker.ui.calendar.CalendarFragment"
+        android:label="@string/calendar"
+        tools:layout="@layout/fragment_calendar" />
+    <fragment
         android:id="@+id/nav_gallery"
         android:name="com.sodiumtracker.ui.gallery.GalleryFragment"
         android:label="@string/menu_gallery"

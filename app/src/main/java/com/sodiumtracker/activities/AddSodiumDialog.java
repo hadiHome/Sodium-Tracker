@@ -2,10 +2,10 @@ package com.sodiumtracker.activities;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -14,18 +14,13 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.room.Room;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.LoadAdError;
-import com.google.android.gms.ads.interstitial.InterstitialAd;
-import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.sodiumtracker.R;
 import com.sodiumtracker.database.AppDatabase;
 import com.sodiumtracker.database.entity.Food;
@@ -36,7 +31,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class AddSodiumDialog extends Dialog implements
-        android.view.View.OnClickListener{
+        android.view.View.OnClickListener {
 
     public Calendar myCalendar;
     public DatePickerDialog.OnDateSetListener date;
@@ -44,15 +39,14 @@ public class AddSodiumDialog extends Dialog implements
     Food food = null;
 
     public EditText nameEt, amountEt;
-    public TextView dateET , txt1;
+    public TextView dateET, txt1;
     boolean isUpdate = false;
     public AppDatabase db;
     public int foodId;
     public Button add;
 
 
-
-    public AddSodiumDialog(@NonNull Context context , int foodId ,String hadi) {
+    public AddSodiumDialog(@NonNull Context context, int foodId, String hadi) {
         super(context);
         this.foodId = foodId;
     }
@@ -67,7 +61,6 @@ public class AddSodiumDialog extends Dialog implements
 
     @Override
     public void onClick(View v) {
-
 
 
     }
@@ -91,10 +84,9 @@ public class AddSodiumDialog extends Dialog implements
         add = findViewById(R.id.add);
 
 
-
         Intent intent = null;
-        Log.d("TAG", "onCreate: "+foodId);
-        if (this.foodId !=-1) {
+        Log.d("TAG", "onCreate: " + foodId);
+        if (this.foodId != -1) {
             add.setText("Update");
             txt1.setText("Update");
 
@@ -104,8 +96,8 @@ public class AddSodiumDialog extends Dialog implements
             nameEt.setText(food.name);
             amountEt.setText(food.amount + "");
         } else {
-           add.setText("Add");
-           txt1.setText("Add");
+            add.setText("Add");
+            txt1.setText("Add");
         }
 
 
@@ -129,10 +121,6 @@ public class AddSodiumDialog extends Dialog implements
         });
 
 
-
-
-
-
     }
 
     public void selectDate(View view) {
@@ -142,28 +130,46 @@ public class AddSodiumDialog extends Dialog implements
     }
 
     public void setDatePicker() {
+
         // add
         if (!isUpdate) {
             myCalendar = Calendar.getInstance();
-            myCalendar.set(Calendar.HOUR_OF_DAY, 0);
-            myCalendar.set(Calendar.MINUTE, 0);
-            myCalendar.set(Calendar.SECOND, 0);
-            myCalendar.set(Calendar.MILLISECOND, 0);
         } else {
             myCalendar = DatesUtils.toCalendar(food.date);
         }
+//        myCalendar.set(Calendar.HOUR_OF_DAY, 0);
+//        myCalendar.set(Calendar.MINUTE, 0);
+        myCalendar.set(Calendar.SECOND, 0);
+        myCalendar.set(Calendar.MILLISECOND, 0);
+
         date = (view, year, monthOfYear, dayOfMonth) -> {
             myCalendar.set(Calendar.YEAR, year);
             myCalendar.set(Calendar.MONTH, monthOfYear);
             myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            selectTime();
             updateLabel();
         };
         updateLabel();
     }
 
+
+    public void selectTime() {
+        new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                myCalendar.set(Calendar.HOUR_OF_DAY, selectedHour);
+                myCalendar.set(Calendar.MINUTE, selectedMinute);
+                updateLabel();
+            }
+        }, myCalendar.get(Calendar.HOUR_OF_DAY), myCalendar.get(Calendar.MINUTE), false).show();//Yes 24 hour time)
+    }
+
+
     private void updateLabel() {
-        String myFormat = "EEEE, MM/dd/yyyy";
+//        String myFormat = "EEEE, MM/dd/yyyy";
+        String myFormat = "EEEE, MM/dd/yyyy hh:mm aa";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat);
+//        SimpleDateFormat sdfTime = new SimpleDateFormat("hh:mm aa");
         dateET.setText(sdf.format(myCalendar.getTime()));
     }
 
@@ -184,7 +190,7 @@ public class AddSodiumDialog extends Dialog implements
                 food.amount = amount;
                 food.date = date;
                 db.foodDao().insertAll(food);
-                Toast.makeText(getContext(),R.string.successfully_added, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.successfully_added, Toast.LENGTH_SHORT).show();
             } else {
 
                 this.food.name = name;
@@ -196,11 +202,10 @@ public class AddSodiumDialog extends Dialog implements
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
             SharedPreferences.Editor ed = prefs.edit();
             ed.putString("dismiss", "1");
-           ed.commit();
+            ed.commit();
 
 
-
-           dismiss();
+            dismiss();
         } else {
             Toast.makeText(getContext(), R.string.please_fill_all_fields, Toast.LENGTH_SHORT).show();
         }

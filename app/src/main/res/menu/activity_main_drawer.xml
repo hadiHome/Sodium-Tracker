@@ -12,22 +12,26 @@
             android:id="@+id/nav_data_chart"
             android:icon="@drawable/ic_baseline_show_chart_24"
             android:title="@string/chart" />
-<!--        <item-->
-<!--            android:id="@+id/nav_gallery"-->
-<!--            android:icon="@drawable/ic_menu_gallery"-->
-<!--            android:title="@string/menu_gallery" />-->
-<!--        <item-->
-<!--            android:id="@+id/nav_slideshow"-->
-<!--            android:icon="@drawable/ic_menu_slideshow"-->
-<!--            android:title="@string/menu_slideshow" />-->
+        <item
+            android:id="@+id/nav_calendar"
+            android:icon="@drawable/ic_baseline_calendar_today_24"
+            android:title="@string/calendar" />
+        <!--        <item-->
+        <!--            android:id="@+id/nav_gallery"-->
+        <!--            android:icon="@drawable/ic_menu_gallery"-->
+        <!--            android:title="@string/menu_gallery" />-->
+        <!--        <item-->
+        <!--            android:id="@+id/nav_slideshow"-->
+        <!--            android:icon="@drawable/ic_menu_slideshow"-->
+        <!--            android:title="@string/menu_slideshow" />-->
 
-<!--        <item-->
-<!--            android:id="@+id/nav_gallery"-->
-<!--            android:icon="@drawable/ic_menu_gallery"-->
-<!--            android:title="@string/menu_gallery" />-->
-<!--        <item-->
-<!--            android:id="@+id/nav_slideshow"-->
-<!--            android:icon="@drawable/ic_menu_slideshow"-->
-<!--            android:title="@string/menu_slideshow" />-->
+        <!--        <item-->
+        <!--            android:id="@+id/nav_gallery"-->
+        <!--            android:icon="@drawable/ic_menu_gallery"-->
+        <!--            android:title="@string/menu_gallery" />-->
+        <!--        <item-->
+        <!--            android:id="@+id/nav_slideshow"-->
+        <!--            android:icon="@drawable/ic_menu_slideshow"-->
+        <!--            android:title="@string/menu_slideshow" />-->
     </group>
 </menu>
