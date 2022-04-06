@@ -12,6 +12,9 @@ import com.sodiumtracker.R;
 import com.sodiumtracker.database.AppDatabase;
 import com.sodiumtracker.ui.home.adapters.RecyclerViewTodayAdapter;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class DetailConsumptionByDateActivity extends AppCompatActivity implements RecyclerViewTodayAdapter.Refresh {
 
     RecyclerView byDateRV;
@@ -25,6 +28,7 @@ public class DetailConsumptionByDateActivity extends AppCompatActivity implement
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_consumption_by_date);
+        SimpleDateFormat sdfDay = new SimpleDateFormat("yyyy-MM-dd");
 
         Intent intent = getIntent();
         if (intent.hasExtra("startDateMilli") && intent.hasExtra("endDateMilli")) {
@@ -33,6 +37,7 @@ public class DetailConsumptionByDateActivity extends AppCompatActivity implement
             if (startDateMilli == 0 || endDateMilli == 0) {
                 finish();
             }
+            setTitle(sdfDay.format(new Date(startDateMilli)));
         } else {
             finish();
         }
@@ -57,7 +62,7 @@ public class DetailConsumptionByDateActivity extends AppCompatActivity implement
 
     public void setLayout() {
 
-        RecyclerViewTodayAdapter recyclerViewTodayAdapter = new RecyclerViewTodayAdapter(db.foodDao().getByDate(startDateMilli, endDateMilli),this);
+        RecyclerViewTodayAdapter recyclerViewTodayAdapter = new RecyclerViewTodayAdapter(db.foodDao().getByDate(startDateMilli, endDateMilli), this);
         byDateRV.setAdapter(recyclerViewTodayAdapter);
 
     }
