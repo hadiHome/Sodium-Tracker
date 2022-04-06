@@ -34,9 +34,9 @@ public class RecyclerViewTodayAdapter extends RecyclerView.Adapter<RecyclerViewT
         void refreshing();
     }
 
-    public RecyclerViewTodayAdapter(List<Food> foods, HomeFragment homeFragment) {
+    public RecyclerViewTodayAdapter(List<Food> foods, Refresh refresh) {
         this.foods = foods;
-        mCallback = (Refresh) homeFragment;
+        mCallback = (Refresh) refresh;
     }
 
 

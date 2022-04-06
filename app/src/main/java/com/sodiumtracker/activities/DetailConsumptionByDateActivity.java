@@ -12,7 +12,7 @@ import com.sodiumtracker.R;
 import com.sodiumtracker.database.AppDatabase;
 import com.sodiumtracker.ui.home.adapters.RecyclerViewTodayAdapter;
 
-public class DetailConsumptionByDateActivity extends AppCompatActivity {
+public class DetailConsumptionByDateActivity extends AppCompatActivity implements RecyclerViewTodayAdapter.Refresh {
 
     RecyclerView byDateRV;
     long startDateMilli;
@@ -57,8 +57,13 @@ public class DetailConsumptionByDateActivity extends AppCompatActivity {
 
     public void setLayout() {
 
-        RecyclerViewTodayAdapter recyclerViewTodayAdapter = new RecyclerViewTodayAdapter(db.foodDao().getByDate(startDateMilli, endDateMilli));
+        RecyclerViewTodayAdapter recyclerViewTodayAdapter = new RecyclerViewTodayAdapter(db.foodDao().getByDate(startDateMilli, endDateMilli),this);
         byDateRV.setAdapter(recyclerViewTodayAdapter);
 
+    }
+
+    @Override
+    public void refreshing() {
+        setLayout();
     }
 }
