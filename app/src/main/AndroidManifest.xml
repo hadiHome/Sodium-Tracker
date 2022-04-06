@@ -9,10 +9,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SodiumTracker">
+        <activity
+            android:name=".activities.DetailConsumptionByDateActivity"
+            android:exported="false" />
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-9624523949741017~4140193437"/>
+            android:value="ca-app-pub-9624523949741017~4140193437" />
+
         <activity
             android:name=".activities.ChangeLimitAmountActivity"
             android:exported="false" />

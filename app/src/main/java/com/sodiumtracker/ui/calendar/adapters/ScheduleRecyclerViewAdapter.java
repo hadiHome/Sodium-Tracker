@@ -1,6 +1,7 @@
 package com.sodiumtracker.ui.calendar.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.sodiumtracker.R;
+import com.sodiumtracker.activities.DetailConsumptionByDateActivity;
 import com.sodiumtracker.database.AppDatabase;
 import com.sodiumtracker.models.ScheduleModel;
 import com.sodiumtracker.utils.DatesUtils;
@@ -70,6 +72,13 @@ public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRe
             long endOfTodayMilli = DatesUtils.atEndOfDay(today).getTime();
             int sum = db.foodDao().getTotalAmountByDate(startOfTodayMilli, endOfTodayMilli);
             holder.resultSumTV.setText(sum + "mg");
+
+            holder.itemView.setOnClickListener(view -> {
+                Intent intent = new Intent(context, DetailConsumptionByDateActivity.class);
+                intent.putExtra("startDateMilli", startOfTodayMilli);
+                intent.putExtra("endDateMilli", endOfTodayMilli);
+                context.startActivity(intent);
+            });
 
         } else {
 
