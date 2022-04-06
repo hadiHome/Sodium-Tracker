@@ -10,137 +10,187 @@
         android:layout_height="match_parent"
         android:background="@color/blue">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:background="@drawable/back_white"
-
-        android:orientation="vertical"
-        tools:context=".ui.home.HomeFragment">
-
-        <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/adView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            ads:adSize="BANNER"
-            ads:adUnitId="ca-app-pub-9624523949741017/7696295068"></com.google.android.gms.ads.AdView>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingTop="10dp">
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="80dp"
-                android:layout_margin="3dp"
-                android:layout_marginStart="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/background"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="10dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/nunito"
-                    android:text="Limit"
-                    android:textColor="@color/blue"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/amountLimitTv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/brandon"
-                    android:text="100mg"
-                    android:textColor="@color/white"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="80dp"
-                android:layout_margin="3dp"
-                android:layout_weight="1"
-                android:background="@drawable/background"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="10dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/nunito"
-                    android:text="Cosumption"
-                    android:textColor="@color/blue"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/totalAmountTv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/brandon"
-                    android:text="100mg"
-                    android:textColor="@color/white"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="80dp"
-                android:layout_margin="3dp"
-                android:layout_marginEnd="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/background"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="10dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/nunito"
-                    android:text="Remaining"
-                    android:textColor="@color/blue"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/remainingAmountTv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/brandon"
-                    android:text="100mg"
-                    android:textColor="@color/white"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <com.google.android.material.progressindicator.LinearProgressIndicator
-            android:id="@+id/progressIndicator"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_margin="10dp"
-            app:indicatorColor="@color/turq"
-            app:trackColor="@color/blue"
-            app:trackCornerRadius="50dp" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/todayRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
-            android:paddingBottom="30dp" />
-    </LinearLayout>
+            android:background="@drawable/back_white"
+
+            android:orientation="vertical"
+            tools:context=".ui.home.HomeFragment">
+
+            <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/adView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                ads:adSize="BANNER"
+                ads:adUnitId="ca-app-pub-9624523949741017/7696295068"></com.google.android.gms.ads.AdView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="10dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_margin="3dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/background"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/nunito"
+                        android:text="Limit"
+                        android:textColor="@color/blue"
+                        android:textSize="14sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center">
+
+                        <TextView
+                            android:id="@+id/amountLimitTv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/brandon"
+                            android:text="100"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+
+                        <TextView
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/brandon"
+                            android:text="mg"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/background"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/nunito"
+                        android:text="Cosumption"
+                        android:textColor="@color/blue"
+                        android:textSize="14sp" />
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center">
+
+                        <TextView
+                            android:id="@+id/totalAmountTv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/brandon"
+                            android:text="100"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+
+                        <TextView
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/brandon"
+                            android:text="mg"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_margin="3dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/background"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/nunito"
+                        android:text="Remaining"
+                        android:textColor="@color/blue"
+                        android:textSize="14sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        >
+
+                        <TextView
+                            android:id="@+id/remainingAmountTv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/brandon"
+                            android:text="100mg"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+                        <TextView
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/brandon"
+                            android:text="mg"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/progressIndicator"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_margin="10dp"
+                app:indicatorColor="@color/turq"
+                app:trackColor="@color/blue"
+                app:trackCornerRadius="50dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/todayRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:paddingBottom="30dp" />
+        </LinearLayout>
     </ScrollView>
 
     <androidx.appcompat.widget.AppCompatButton

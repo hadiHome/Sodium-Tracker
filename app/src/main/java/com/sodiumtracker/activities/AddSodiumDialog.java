@@ -177,6 +177,9 @@ public class AddSodiumDialog extends Dialog implements
     public void addItem(View view) {
 
         String name = nameEt.getText().toString();
+        if(name.equals("")){
+            name = "Random";
+        }
         String amountStr = amountEt.getText().toString();
         Calendar calendar = myCalendar;
         Date date = calendar.getTime();

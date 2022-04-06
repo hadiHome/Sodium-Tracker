@@ -4,21 +4,36 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="15dp"
+
     android:orientation="vertical"
     tools:context=".activities.ChangeLimitAmountActivity">
 
 
     <EditText
         android:id="@+id/amountLimitET"
-        android:layout_width="match_parent"
+  android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
+     android:layout_gravity="center_horizontal"
+
+
+
+        android:fontFamily="@font/brandon"
+        android:hint="Limit"
+
+        android:textAlignment="center"
+        android:textColor="@color/blue"
+        android:textSize="18dp"
+        android:textStyle="bold"
         android:inputType="number" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/saveButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/item_back"
+
         android:text="Save" />
 
 

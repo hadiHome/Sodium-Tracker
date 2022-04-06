@@ -10,6 +10,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,6 +26,11 @@ import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.play.core.review.ReviewInfo;
+import com.google.android.play.core.review.ReviewManager;
+import com.google.android.play.core.review.ReviewManagerFactory;
+import com.google.android.play.core.review.model.ReviewErrorCode;
+import com.google.android.play.core.tasks.Task;
 import com.sodiumtracker.activities.AddSodiumDialog;
 import com.sodiumtracker.database.AppDatabase;
 import com.sodiumtracker.databinding.ActivityMainBinding;
@@ -36,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private FragmentRefreshListener fragmentRefreshListener;
 
     AppDatabase db;
+    private ReviewInfo reviewInfo;
 
 
     public FragmentRefreshListener getFragmentRefreshListener() {
@@ -67,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
         AdRequest adRequest = new AdRequest.Builder().build();
 
         setSupportActionBar(binding.appBarMain.toolbar);
+
 
 
 

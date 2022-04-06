@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="340dp"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
 
@@ -9,13 +9,13 @@
 
 
     <RelativeLayout
-        android:layout_width="340dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
 
-        android:layout_marginTop="-50dp"
+
         android:background="@drawable/background">
 
 
@@ -26,11 +26,11 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="20dp"
             android:fontFamily="@font/nunito"
             android:text="Edit"
             android:textColor="@android:color/white"
-            android:textSize="22dp"
+            android:textSize="25dp"
             android:textStyle="bold" />
 
         <LinearLayout
@@ -75,7 +75,7 @@
                 android:layout_weight="1"
                 android:background="@null"
                 android:fontFamily="@font/brandon"
-                android:hint="Amount"
+                android:hint="Amount (mg)"
                 android:inputType="number"
                 android:maxLength="5"
                 android:textAlignment="center"

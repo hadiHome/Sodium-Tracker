@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,6 +29,10 @@ import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
+import com.google.android.play.core.review.ReviewInfo;
+import com.google.android.play.core.review.ReviewManager;
+import com.google.android.play.core.review.ReviewManagerFactory;
+import com.google.android.play.core.tasks.Task;
 import com.sodiumtracker.MainActivity;
 import com.sodiumtracker.MyPreferences;
 import com.sodiumtracker.R;
@@ -41,12 +46,14 @@ import com.sodiumtracker.utils.DatesUtils;
 import java.util.Calendar;
 import java.util.Date;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements RecyclerViewTodayAdapter.Refresh {
 
     private HomeViewModel homeViewModel;
     private FragmentHomeBinding binding;
     AdView mAdView;
 
+    private ReviewManager manager;
+    private ReviewInfo reviewInfo;
     AppDatabase db;
     private InterstitialAd mInterstitialAd;
 
@@ -63,6 +70,26 @@ public class HomeFragment extends Fragment {
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+        //////Review
+      manager = ReviewManagerFactory.create(getContext());
+        Task<ReviewInfo> request = manager.requestReviewFlow();
+        request.addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                // We can get the ReviewInfo object
+                Toast.makeText(getContext(),"review  start ",Toast.LENGTH_SHORT);
+                Log.d("TAG", "onCreateView: start" +task.toString());
+
+                reviewInfo = task.getResult();
+
+            } else {
+
+                Toast.makeText(getContext(),"review failed to start ",Toast.LENGTH_SHORT);
+                Log.d("TAG", "onCreateView: failed");
+                // There was some problem, log or handle the error code.
+//                @ReviewErrorCode int reviewErrorCode = ((TaskException) task.getException()).getErrorCode();
+            }
+        });
 
 
         ((MainActivity) getActivity()).setFragmentRefreshListener(new MainActivity.FragmentRefreshListener() {
@@ -127,8 +154,22 @@ public class HomeFragment extends Fragment {
 
                 cdd.getWindow().setLayout(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 cdd.setOnDismissListener(dialog -> {
+                    Task<Void> flow = manager.launchReviewFlow(getActivity(), reviewInfo);
+                    flow.addOnCompleteListener(task -> {
+                        Log.d("TAG", "onClick: "+reviewInfo.toString());
+                        Toast.makeText(getContext(),"start ",Toast.LENGTH_SHORT);
+                        // The flow has finished. The API does not indicate whether the user
+                        // reviewed or not, or even whether the review dialog was shown. Thus, no
+                        // matter the result, we continue our app flow.
+                    });
+
+
                     showAd();
                     setLayout();
+
+
+
+                    ///////////
 
                 });
 
@@ -175,7 +216,7 @@ public class HomeFragment extends Fragment {
             binding.progressIndicator.setProgress(progress);
         }
 
-        RecyclerViewTodayAdapter recyclerViewTodayAdapter = new RecyclerViewTodayAdapter(db.foodDao().getByDate(startOfTodayMilli, endOfTodayMilli));
+        RecyclerViewTodayAdapter recyclerViewTodayAdapter = new RecyclerViewTodayAdapter(db.foodDao().getByDate(startOfTodayMilli, endOfTodayMilli),this);
         binding.todayRecyclerView.setAdapter(recyclerViewTodayAdapter);
 
     }
@@ -198,4 +239,8 @@ public class HomeFragment extends Fragment {
         }
     }
 
+    @Override
+    public void refreshing() {
+        setLayout();
+    }
 }
