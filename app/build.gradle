@@ -9,7 +9,7 @@ android {
         applicationId "com.sodiumtracker"
         minSdk 21
         targetSdk 31
-        versionCode 4
+        versionCode 7
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -47,6 +47,10 @@ dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
     implementation 'com.google.android.gms:play-services-ads:20.6.0'
+
+    def billing_version = "4.1.0"
+
+    implementation "com.android.billingclient:billing:$billing_version"
 
 
     def room_version = "2.4.2"

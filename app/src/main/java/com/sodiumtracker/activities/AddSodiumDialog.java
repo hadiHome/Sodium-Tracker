@@ -43,7 +43,7 @@ public class AddSodiumDialog extends Dialog implements
     boolean isUpdate = false;
     public AppDatabase db;
     public int foodId;
-    public Button add;
+    public Button add, delete;
 
 
     public AddSodiumDialog(@NonNull Context context, int foodId, String hadi) {
@@ -82,6 +82,7 @@ public class AddSodiumDialog extends Dialog implements
         amountEt = findViewById(R.id.amountEt);
         txt1 = findViewById(R.id.txt1);
         add = findViewById(R.id.add);
+        delete = findViewById(R.id.delete);
 
 
         Intent intent = null;
@@ -89,13 +90,14 @@ public class AddSodiumDialog extends Dialog implements
         if (this.foodId != -1) {
             add.setText("Update");
             txt1.setText("Update");
-
+            delete.setVisibility(View.VISIBLE);
             isUpdate = true;
 //            id = intent.getIntExtra("id", 0);
             food = db.foodDao().getOne(foodId);
             nameEt.setText(food.name);
             amountEt.setText(food.amount + "");
         } else {
+            delete.setVisibility(View.GONE);
             add.setText("Add");
             txt1.setText("Add");
         }
@@ -103,21 +105,13 @@ public class AddSodiumDialog extends Dialog implements
 
         setDatePicker();
 
-        dateET.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectDate(v);
-            }
-        });
+        dateET.setOnClickListener(v -> selectDate(v));
 
-        add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        add.setOnClickListener(v -> addItem(v));
 
-                addItem(v);
-
-
-            }
+        delete.setOnClickListener(v -> {
+            db.foodDao().delete(food);
+            dismiss();
         });
 
 
@@ -177,7 +171,7 @@ public class AddSodiumDialog extends Dialog implements
     public void addItem(View view) {
 
         String name = nameEt.getText().toString();
-        if(name.equals("")){
+        if (name.equals("")) {
             name = "Random";
         }
         String amountStr = amountEt.getText().toString();
