@@ -21,6 +21,7 @@ import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.android.billingclient.api.SkuDetails;
 import com.android.billingclient.api.SkuDetailsParams;
+import com.android.billingclient.api.SkuDetailsResponseListener;
 import com.sodiumtracker.MyPreferences;
 import com.sodiumtracker.R;
 
@@ -97,7 +98,13 @@ public class ShopFragment extends Fragment {
                     SkuDetailsParams.Builder params = SkuDetailsParams.newBuilder();
                     params.setSkusList(skuList).setType(BillingClient.SkuType.INAPP);
                     billingClient.querySkuDetailsAsync(params.build(),
-                            (billingResult1, skuDetailsList) -> setButtons(skuDetailsList));
+                            new SkuDetailsResponseListener() {
+                                @Override
+                                public void onSkuDetailsResponse(@NonNull BillingResult billingResult, @Nullable List<SkuDetails> list) {
+                                    setButtons(list);
+                                }
+                            }
+                    );
                     billingClient.queryPurchasesAsync(BillingClient.SkuType.INAPP, (billingResult12, list) -> {
                         for (int i = 0; i < list.size(); i++) {
                             handlePurchase(list.get(i));
