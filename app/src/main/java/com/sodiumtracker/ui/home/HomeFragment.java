@@ -207,7 +207,7 @@ public class HomeFragment extends Fragment implements RecyclerViewTodayAdapter.R
 
         int limit = MyPreferences.getAmountLimit(getContext());
         binding.amountLimitTv.setText("" + limit);
-        binding.amountLimitTv.setOnClickListener(new View.OnClickListener() {
+        binding.limitLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getActivity(), ChangeLimitAmountActivity.class));
