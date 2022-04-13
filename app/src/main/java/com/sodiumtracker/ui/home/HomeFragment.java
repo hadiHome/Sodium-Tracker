@@ -72,19 +72,19 @@ public class HomeFragment extends Fragment implements RecyclerViewTodayAdapter.R
         View root = binding.getRoot();
 
         //////Review
-      manager = ReviewManagerFactory.create(getContext());
+        manager = ReviewManagerFactory.create(getContext());
         Task<ReviewInfo> request = manager.requestReviewFlow();
         request.addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 // We can get the ReviewInfo object
-                Toast.makeText(getContext(),"review  start ",Toast.LENGTH_SHORT);
-                Log.d("TAG", "onCreateView: start" +task.toString());
+                Toast.makeText(getContext(), "review  start ", Toast.LENGTH_SHORT);
+                Log.d("TAG", "onCreateView: start" + task.toString());
 
                 reviewInfo = task.getResult();
 
             } else {
 
-                Toast.makeText(getContext(),"review failed to start ",Toast.LENGTH_SHORT);
+                Toast.makeText(getContext(), "review failed to start ", Toast.LENGTH_SHORT);
                 Log.d("TAG", "onCreateView: failed");
                 // There was some problem, log or handle the error code.
 //                @ReviewErrorCode int reviewErrorCode = ((TaskException) task.getException()).getErrorCode();
@@ -114,30 +114,39 @@ public class HomeFragment extends Fragment implements RecyclerViewTodayAdapter.R
             }
         });
 
-        mAdView = view.findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
 
+        mAdView = view.findViewById(R.id.adView);
+        if (MyPreferences.isAdsRemoved(getContext())) {
+            mAdView.setVisibility(View.GONE);
+        } else {
+            mAdView.loadAd(adRequest);
+        }
 
         binding.todayRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 1));
 
-        InterstitialAd.load(getActivity(), "ca-app-pub-9624523949741017/9650668273", adRequest,
-                new InterstitialAdLoadCallback() {
-                    @Override
-                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
-                        // The mInterstitialAd reference will be null until
-                        // an ad is loaded.
-                        mInterstitialAd = interstitialAd;
-                        Log.i("TAG", "onAdLoaded");
-                    }
+        if (MyPreferences.isAdsRemoved(getContext())) {
 
-                    @Override
-                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                        // Handle the error
-                        Log.i("TAG", loadAdError.getMessage());
-                        mInterstitialAd = null;
-                    }
-                });
+        } else {
+            InterstitialAd.load(getActivity(), "ca-app-pub-9624523949741017/9650668273", adRequest,
+                    new InterstitialAdLoadCallback() {
+                        @Override
+                        public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                            // The mInterstitialAd reference will be null until
+                            // an ad is loaded.
+                            mInterstitialAd = interstitialAd;
+                            Log.i("TAG", "onAdLoaded");
+                        }
+
+                        @Override
+                        public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                            // Handle the error
+                            Log.i("TAG", loadAdError.getMessage());
+                            mInterstitialAd = null;
+                        }
+                    });
+        }
+
 
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,17 +165,19 @@ public class HomeFragment extends Fragment implements RecyclerViewTodayAdapter.R
                 cdd.setOnDismissListener(dialog -> {
                     Task<Void> flow = manager.launchReviewFlow(getActivity(), reviewInfo);
                     flow.addOnCompleteListener(task -> {
-                        Log.d("TAG", "onClick: "+reviewInfo.toString());
-                        Toast.makeText(getContext(),"start ",Toast.LENGTH_SHORT);
+                        Log.d("TAG", "onClick: " + reviewInfo.toString());
+                        Toast.makeText(getContext(), "start ", Toast.LENGTH_SHORT);
                         // The flow has finished. The API does not indicate whether the user
                         // reviewed or not, or even whether the review dialog was shown. Thus, no
                         // matter the result, we continue our app flow.
                     });
 
+                    if (MyPreferences.isAdsRemoved(getContext())) {
 
-                    showAd();
+                    } else {
+                        showAd();
+                    }
                     setLayout();
-
 
 
                     ///////////
@@ -216,7 +227,7 @@ public class HomeFragment extends Fragment implements RecyclerViewTodayAdapter.R
             binding.progressIndicator.setProgress(progress);
         }
 
-        RecyclerViewTodayAdapter recyclerViewTodayAdapter = new RecyclerViewTodayAdapter(db.foodDao().getByDate(startOfTodayMilli, endOfTodayMilli),this);
+        RecyclerViewTodayAdapter recyclerViewTodayAdapter = new RecyclerViewTodayAdapter(db.foodDao().getByDate(startOfTodayMilli, endOfTodayMilli), this);
         binding.todayRecyclerView.setAdapter(recyclerViewTodayAdapter);
 
     }
@@ -231,7 +242,6 @@ public class HomeFragment extends Fragment implements RecyclerViewTodayAdapter.R
         if (mInterstitialAd != null) {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
             SharedPreferences.Editor ed = prefs.edit();
-
             ed.commit();
             mInterstitialAd.show(getActivity());
         } else {
