@@ -73,5 +73,9 @@ dependencies {
 //    // optional - Paging 3 Integration
 //    implementation "androidx.room:room-paging:2.5.0-alpha01"
 
+    def billing_version = "4.1.0"
+
+    implementation "com.android.billingclient:billing:$billing_version"
+
 
 }
