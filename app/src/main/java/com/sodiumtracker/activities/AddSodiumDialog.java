@@ -21,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.room.Room;
 
+import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.sodiumtracker.R;
 import com.sodiumtracker.database.AppDatabase;
 import com.sodiumtracker.database.entity.Food;
@@ -44,7 +45,7 @@ public class AddSodiumDialog extends Dialog implements
     public AppDatabase db;
     public int foodId;
     public Button add, delete;
-
+    private InterstitialAd mInterstitialAd;
 
     public AddSodiumDialog(@NonNull Context context, int foodId, String hadi) {
         super(context);
@@ -71,6 +72,7 @@ public class AddSodiumDialog extends Dialog implements
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.edit_dialog);
+
 
         db = Room.databaseBuilder(
                 getContext(),

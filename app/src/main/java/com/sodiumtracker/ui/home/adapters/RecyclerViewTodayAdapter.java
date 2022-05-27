@@ -79,21 +79,21 @@ public class RecyclerViewTodayAdapter extends RecyclerView.Adapter<RecyclerViewT
 //        holder.date.setText(shortTimeStr);
 
         holder.itemView.setOnClickListener(view -> {
-//            Intent intent = new Intent(context, AddSodiumActivity.class);
-//            intent.putExtra("id", food.id);
+            Intent intent = new Intent(context, AddSodiumActivity.class);
+            intent.putExtra("id", food.id);
+
+            context.startActivity(intent);
+//            String hadi = "hi";
 //
-//            context.startActivity(intent);
-            String hadi = "hi";
-
-            AddSodiumDialog cdd = new AddSodiumDialog(context, food.id, hadi);
-            cdd.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            cdd.show();
-
-            cdd.getWindow().setLayout(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            cdd.setOnDismissListener(dialog -> {
-                mCallback.refreshing();
-
-            });
+//            AddSodiumDialog cdd = new AddSodiumDialog(context, food.id, hadi);
+//            cdd.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//            cdd.show();
+//
+//            cdd.getWindow().setLayout(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//            cdd.setOnDismissListener(dialog -> {
+//                mCallback.refreshing();
+//
+//            });
 
 
         });

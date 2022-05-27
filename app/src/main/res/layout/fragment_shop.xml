@@ -5,17 +5,54 @@
     android:layout_height="match_parent"
     tools:context=".ui.shop.ShopFragment">
 
-    <TextView
-        android:id="@+id/remove_ads_title_TV"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone" />
 
-    <Button
-        android:id="@+id/remove_ads_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+
+    <LinearLayout
+        android:id="@+id/lay"
+        android:layout_width="fill_parent"
+        android:weightSum="3"
+        android:visibility="gone"
+        android:layout_height="45dp"
+        android:layout_margin="5dp"
+android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:drawableEnd="@drawable/adss"
+        android:background="@drawable/item_back"
         android:text=""
-        android:visibility="gone" />
+        >
+        <TextView
+            android:id="@+id/remove_ads_title_TV"
+            android:layout_width="0dp"
+            android:layout_weight="1.5"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+
+            android:textSize="18dp"
+            android:textAlignment="center"
+            android:fontFamily="@font/helv"
+
+            />
+        <TextView
+            android:id="@+id/remove_ads_button"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+
+            android:textSize="18dp"
+            android:textAlignment="center"
+           android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:fontFamily="@font/helv"
+
+            />
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+android:src="@drawable/adss"></ImageView>
+
+    </LinearLayout>
 
 </FrameLayout>

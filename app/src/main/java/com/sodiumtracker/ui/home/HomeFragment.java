@@ -36,8 +36,10 @@ import com.google.android.play.core.tasks.Task;
 import com.sodiumtracker.MainActivity;
 import com.sodiumtracker.MyPreferences;
 import com.sodiumtracker.R;
+import com.sodiumtracker.activities.AddSodiumActivity;
 import com.sodiumtracker.activities.AddSodiumDialog;
 import com.sodiumtracker.activities.ChangeLimitAmountActivity;
+import com.sodiumtracker.activities.ChangeLimitAmountDialog;
 import com.sodiumtracker.database.AppDatabase;
 import com.sodiumtracker.databinding.FragmentHomeBinding;
 import com.sodiumtracker.ui.home.adapters.RecyclerViewTodayAdapter;
@@ -153,37 +155,40 @@ public class HomeFragment extends Fragment implements RecyclerViewTodayAdapter.R
             public void onClick(View view) {
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
-//                Intent intent = new Intent(getApplicationContext(), AddSodiumActivity.class);
-//                startActivity(intent);
+                Intent intent = new Intent(getContext(), AddSodiumActivity.class);
+                intent.putExtra("id",-1);
+
+                startActivity(intent);
 
 
-                AddSodiumDialog cdd = new AddSodiumDialog(getActivity(), -1, "hi");
-                cdd.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                cdd.show();
-
-                cdd.getWindow().setLayout(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                cdd.setOnDismissListener(dialog -> {
-                    Task<Void> flow = manager.launchReviewFlow(getActivity(), reviewInfo);
-                    flow.addOnCompleteListener(task -> {
-                        Log.d("TAG", "onClick: " + reviewInfo.toString());
-                        Toast.makeText(getContext(), "start ", Toast.LENGTH_SHORT);
-                        // The flow has finished. The API does not indicate whether the user
-                        // reviewed or not, or even whether the review dialog was shown. Thus, no
-                        // matter the result, we continue our app flow.
-                    });
-
-                    if (MyPreferences.isAdsRemoved(getContext())) {
-
-                    } else {
-                        showAd();
-                    }
-                    setLayout();
-
-
-                    ///////////
-
-                });
-
+//                AddSodiumDialog cdd = new AddSodiumDialog(getActivity(), -1, "hi");
+//                cdd.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//                cdd.show();
+//
+//                cdd.getWindow().setLayout(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//
+//                cdd.setOnDismissListener(dialog -> {
+//                    Task<Void> flow = manager.launchReviewFlow(getActivity(), reviewInfo);
+//                    flow.addOnCompleteListener(task -> {
+//                        Log.d("TAG", "onClick: " + reviewInfo.toString());
+//                        Toast.makeText(getContext(), "start ", Toast.LENGTH_SHORT);
+//                        // The flow has finished. The API does not indicate whether the user
+//                        // reviewed or not, or even whether the review dialog was shown. Thus, no
+//                        // matter the result, we continue our app flow.
+//                    });
+//
+////                    if (MyPreferences.isAdsRemoved(getContext())) {
+////
+////                    } else {
+////                        showAd();
+////                    }
+//
+//
+//
+//                    ///////////
+//
+//                });
+                setLayout();
 
             }
         });
@@ -210,7 +215,37 @@ public class HomeFragment extends Fragment implements RecyclerViewTodayAdapter.R
         binding.limitLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), ChangeLimitAmountActivity.class));
+
+
+                ChangeLimitAmountDialog cdd = new ChangeLimitAmountDialog(getActivity());
+                cdd.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                cdd.show();
+
+                cdd.getWindow().setLayout(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                cdd.setOnDismissListener(dialog -> {
+                    Task<Void> flow = manager.launchReviewFlow(getActivity(), reviewInfo);
+                    flow.addOnCompleteListener(task -> {
+                        Log.d("TAG", "onClick: " + reviewInfo.toString());
+//                        Toast.makeText(getContext(), "start ", Toast.LENGTH_SHORT);
+                        // The flow has finished. The API does not indicate whether the user
+                        // reviewed or not, or even whether the review dialog was shown. Thus, no
+                        // matter the result, we continue our app flow.
+                    });
+
+//                    if (MyPreferences.isAdsRemoved(getContext())) {
+//
+//                    } else {
+//                        showAd();
+//                    }
+                    setLayout();
+
+
+                    ///////////
+
+                });
+
+
+
             }
         });
         binding.totalAmountTv.setText("" + sum);

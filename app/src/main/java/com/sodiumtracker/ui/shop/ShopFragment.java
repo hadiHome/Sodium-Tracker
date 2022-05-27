@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -36,8 +37,9 @@ public class ShopFragment extends Fragment {
     BillingClient billingClient;
     AcknowledgePurchaseResponseListener acknowledgePurchaseResponseListener;
 
-    Button remove_ads_button;
+    TextView remove_ads_button;
     TextView remove_ads_title_TV;
+    LinearLayout lay;
 
     public ShopFragment() {
     }
@@ -69,6 +71,7 @@ public class ShopFragment extends Fragment {
 
         remove_ads_button = view.findViewById(R.id.remove_ads_button);
         remove_ads_title_TV = view.findViewById(R.id.remove_ads_title_TV);
+        lay = view.findViewById(R.id.lay);
 
         PurchasesUpdatedListener purchasesUpdatedListener = (billingResult, purchases) -> {
             if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK
@@ -190,13 +193,13 @@ public class ShopFragment extends Fragment {
 
             if (productId.equals("remove_ads")) {
                 getActivity().runOnUiThread(() -> {
-                    remove_ads_button.setVisibility(View.VISIBLE);
-                    remove_ads_title_TV.setVisibility(View.VISIBLE);
+                    lay.setVisibility(View.VISIBLE);
 
+//                    remove_ads_title_TV.setVisibility(View.VISIBLE);
                     remove_ads_button.setText(price);
                     String shortTitle = title.substring(0, title.lastIndexOf(" ("));
                     remove_ads_title_TV.setText(shortTitle);
-                    remove_ads_button.setOnClickListener(v -> {
+                    lay.setOnClickListener(v -> {
 
                         BillingFlowParams billingFlowParams = BillingFlowParams.newBuilder()
                                 .setSkuDetails(skuDetail)

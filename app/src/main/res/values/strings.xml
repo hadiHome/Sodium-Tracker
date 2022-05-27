@@ -28,4 +28,5 @@
     <string name="now">Now</string>
     <string name="calendar">Calendar</string>
     <string name="shop">Remove Ads</string>
+    <string name="delete">delete</string>
 </resources>
